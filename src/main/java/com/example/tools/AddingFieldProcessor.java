@@ -24,7 +24,8 @@ public class AddingFieldProcessor {
 
   private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 
-  private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+  private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls()
+      .create();
 
   private AddingFieldProcessor() {
     // NOP

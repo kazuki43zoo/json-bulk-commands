@@ -1,7 +1,8 @@
 [
   {
     "field1": "11111",
-    "field3": "11111"
+    "field3": "'abc'",
+    "field4": null
   },
   {
     "field1": "22222"

@@ -1,5 +1,7 @@
 package com.example.tools;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.YamlMapFactoryBean;
@@ -23,7 +25,12 @@ import java.util.stream.Stream;
 
 @Component
 public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, ExitCodeGenerator {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(JsonBulkCommandsApplicationRunner.class);
+
+  static {
+    Configuration.defaultConfiguration().jsonProvider(new JacksonJsonProvider());
+  }
 
   private int exitCode;
 
