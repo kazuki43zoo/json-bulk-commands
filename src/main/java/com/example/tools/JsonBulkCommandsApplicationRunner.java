@@ -168,10 +168,16 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
     LOGGER.info("Start. command:{} dir:{} files:{} field-names:{} field-values:{} value-mappings:{}",
         command, dir, files, fieldNames, fieldValues, valueMappings);
 
-    Files.walk(Paths.get(dir))
-        .filter(Files::isRegularFile)
-        .filter(file -> files.stream().anyMatch(x -> file.toString().replace('\\', '/').endsWith(x)))
-        .sorted().forEach(file -> execute(command, fieldNames, fieldValues, file, valueMappings));
+    try {
+      Files.walk(Paths.get(dir))
+          .filter(Files::isRegularFile)
+          .filter(file -> files.stream().anyMatch(x -> file.toString().replace('\\', '/').endsWith(x)))
+          .sorted().forEach(file -> execute(command, fieldNames, fieldValues, file, valueMappings));
+    }
+    catch (IllegalArgumentException e) {
+      this.exitCode = 2;
+      LOGGER.warn(e.getMessage());
+    }
 
     LOGGER.info("End.");
 
@@ -183,35 +189,25 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
     switch (command) {
     case "adding-fields":
       if (fieldNames.isEmpty()) {
-        this.exitCode = 2;
-        LOGGER.warn("'field-names' is required.");
-        break;
+        throw new IllegalArgumentException("'field-names' is required.");
       }
       if (fieldNames.size() != fieldValues.size()) {
-        this.exitCode = 2;
-        LOGGER.warn("'field-names' and 'field-values' should be same size.");
-        break;
+        throw new IllegalArgumentException("'field-names' and 'field-values' should be same size.");
       }
       AddingFieldProcessor.INSTANCE.execute(fieldNames, fieldValues, file, valueMappings);
       break;
     case "deleting-fields":
       if (fieldNames.isEmpty()) {
-        this.exitCode = 2;
-        LOGGER.warn("'field-names' is required.");
-        break;
+        throw new IllegalArgumentException("'field-names' is required.");
       }
       DeletingFieldProcessor.INSTANCE.execute(fieldNames, file);
       break;
     case "updating-fields":
       if (fieldNames.isEmpty()) {
-        this.exitCode = 2;
-        LOGGER.warn("'field-names' is required.");
-        break;
+        throw new IllegalArgumentException("'field-names' is required.");
       }
       if (fieldNames.size() != fieldValues.size()) {
-        this.exitCode = 2;
-        LOGGER.warn("'field-names' and 'field-values' should be same size.");
-        break;
+        throw new IllegalArgumentException("'field-names' and 'field-values' should be same size.");
       }
       UpdatingFieldProcessor.INSTANCE.execute(fieldNames, fieldValues, file, valueMappings);
       break;
@@ -219,9 +215,8 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
       FormattingProcessor.INSTANCE.execute(file);
       break;
     default:
-      this.exitCode = 2;
-      LOGGER.warn("'{}' command not support. valid-commands:{}", command,
-          "[adding-fields, deleting-fields, updating-fields]");
+      throw new IllegalArgumentException(String.format("'%s' command not support. valid-commands:%s", command,
+          "[adding-fields, deleting-fields, updating-fields]"));
     }
 
   }
