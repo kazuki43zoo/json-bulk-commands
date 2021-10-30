@@ -10,25 +10,21 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
-public class DeletingFieldProcessor {
+public class FormattingProcessor {
 
-  static final DeletingFieldProcessor INSTANCE = new DeletingFieldProcessor();
+  static final FormattingProcessor INSTANCE = new FormattingProcessor();
 
   private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls()
       .create();
 
-  private DeletingFieldProcessor() {
+  private FormattingProcessor() {
     // NOP
   }
 
-  void execute(List<String> fieldNames, Path file) {
+  void execute(Path file) {
     try {
       DocumentContext documentContext = JsonPath.parse(file.toFile());
-      for (String itemName : fieldNames) {
-        documentContext.delete(itemName);
-      }
       try (Writer writer = Files.newBufferedWriter(file)) {
         GSON.toJson((Object) documentContext.json(), writer);
       }

@@ -9,6 +9,7 @@ Support following features.
 * Adding fields by specified expression(fixed value or dynamic value) at the end
 * Deleting fields
 * Updating fields by specified expression(fixed value or dynamic value)
+* Formatting json to pretty format
 
 ## Related libraries document
 
@@ -64,7 +65,7 @@ Search files that matches conditions specified by `--dir` and `--files`.
 
 [Command arguments]
   --command
-       adding-fields deleting-fields updating-fields
+       adding-fields deleting-fields updating-fields formatting
   --dir
        target directory for apply command(can search target files on specified directory)
   --files
@@ -123,6 +124,10 @@ Search files that matches conditions specified by `--dir` and `--files`.
   ------------------------
   [{"field1":"12345", "field2":"0"}, {"field1":"67890", "field2":"0"}]
   ------------------------
+
+[Usage: formatting]
+  Formatting json to pretty format.
+  e.g.) --command=formatting --dir=src/test/resources/data --files=xxx.json,yyy.json
 
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS

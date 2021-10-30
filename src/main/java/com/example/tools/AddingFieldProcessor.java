@@ -32,6 +32,9 @@ public class AddingFieldProcessor {
   }
 
   void execute(List<String> fieldNames, List<String> fieldValues, Path file, Map<String, Object> valueMappings) {
+    if (fieldNames.isEmpty()) {
+
+    }
     try {
       DocumentContext documentContext = JsonPath.parse(file.toFile());
       StandardEvaluationContext context = new StandardEvaluationContext(documentContext.json());

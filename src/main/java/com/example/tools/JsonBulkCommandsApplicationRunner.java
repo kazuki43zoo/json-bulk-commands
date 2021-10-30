@@ -40,7 +40,7 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
       System.out.println();
       System.out.println("[Command arguments]");
       System.out.println("  --command");
-      System.out.println("       adding-fields deleting-fields updating-fields");
+      System.out.println("       adding-fields deleting-fields updating-fields formatting");
       System.out.println("  --dir");
       System.out.println("       target directory for apply command(can search target files on specified directory)");
       System.out.println("  --files");
@@ -104,6 +104,11 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
       System.out.println("  ------------------------");
       System.out.println("  [{\"field1\":\"12345\", \"field2\":\"0\"}, {\"field1\":\"67890\", \"field2\":\"0\"}]");
       System.out.println("  ------------------------");
+      System.out.println();
+      System.out.println("[Usage: formatting]");
+      System.out.println("  Formatting json to pretty format.");
+      System.out.println(
+          "  e.g.) --command=formatting --dir=src/test/resources/data --files=xxx.json,yyy.json");
       System.out.println();
       return;
     }
@@ -177,13 +182,41 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
     LOGGER.info("processing file:{}", file);
     switch (command) {
     case "adding-fields":
+      if (fieldNames.isEmpty()) {
+        this.exitCode = 2;
+        LOGGER.warn("'field-names' is required.");
+        break;
+      }
+      if (fieldNames.size() != fieldValues.size()) {
+        this.exitCode = 2;
+        LOGGER.warn("'field-names' and 'field-values' should be same size.");
+        break;
+      }
       AddingFieldProcessor.INSTANCE.execute(fieldNames, fieldValues, file, valueMappings);
       break;
     case "deleting-fields":
+      if (fieldNames.isEmpty()) {
+        this.exitCode = 2;
+        LOGGER.warn("'field-names' is required.");
+        break;
+      }
       DeletingFieldProcessor.INSTANCE.execute(fieldNames, file);
       break;
     case "updating-fields":
+      if (fieldNames.isEmpty()) {
+        this.exitCode = 2;
+        LOGGER.warn("'field-names' is required.");
+        break;
+      }
+      if (fieldNames.size() != fieldValues.size()) {
+        this.exitCode = 2;
+        LOGGER.warn("'field-names' and 'field-values' should be same size.");
+        break;
+      }
       UpdatingFieldProcessor.INSTANCE.execute(fieldNames, fieldValues, file, valueMappings);
+      break;
+    case "formatting":
+      FormattingProcessor.INSTANCE.execute(file);
       break;
     default:
       this.exitCode = 2;
