@@ -72,7 +72,7 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
       System.out.println("[Usage: adding-fields]");
       System.out.println("  Adding specified new field using field-names and field-values.");
       System.out.println(
-          "  e.g.) --command=adding-fields --dir=src/test/resources/data --files=xxx.json,yyy.json --column-names=$.field2,$.field3 --column-values=1,#root[field1]");
+          "  e.g.) --command=adding-fields --dir=src/test/resources/data --files=xxx.json,yyy.json --field-names=$.field2,$.field3 --field-values=1,#root[field1]");
       System.out.println("  ------------------------");
       System.out.println("  {\"field1\":\"12345\"}");
       System.out.println("  ------------------------");
@@ -119,7 +119,7 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
     } else {
       this.exitCode = 2;
       LOGGER.warn(
-          "'command' is required. valid-commands:[adding-fields, deleting-fields, updating-fields]");
+          "'command' is required. valid-commands:[adding-fields, deleting-fields, updating-fields, formatting]");
       return;
     }
 
@@ -216,7 +216,7 @@ public class JsonBulkCommandsApplicationRunner implements ApplicationRunner, Exi
       break;
     default:
       throw new IllegalArgumentException(String.format("'%s' command not support. valid-commands:%s", command,
-          "[adding-fields, deleting-fields, updating-fields]"));
+          "[adding-fields, deleting-fields, updating-fields, formatting]"));
     }
 
   }

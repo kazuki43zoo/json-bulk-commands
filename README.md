@@ -94,7 +94,7 @@ Search files that matches conditions specified by `--dir` and `--files`.
 
 [Usage: adding-fields]
   Adding specified new field using field-names and field-values.
-  e.g.) --command=adding-fields --dir=src/test/resources/data --files=xxx.json,yyy.json --column-names=$.field2,$.field3 --column-values=1,#root[field1]
+  e.g.) --command=adding-fields --dir=src/test/resources/data --files=xxx.json,yyy.json --field-names=$.field2,$.field3 --field-values=1,#root[field1]
   ------------------------
   {"field1":"12345"}
   ------------------------
