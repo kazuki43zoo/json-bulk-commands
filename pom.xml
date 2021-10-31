@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example.tools</groupId>
     <artifactId>json-bulk-commands</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>json-bulk-commands</name>
     <description>json-bulk-commands</description>
     <properties>
